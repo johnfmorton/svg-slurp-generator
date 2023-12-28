@@ -1,0 +1,139 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
+    font-weight: normal;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    /* height: 100vh; */
+
+    background: hsl(0, 0%, 96%);
+    color: black;
+    background-color: #fafafa;
+    /* linear gradient background */
+    background: linear-gradient(140deg, #f5f5f5 0%, rgb(223, 223, 223) 50%);
+}
+
+body#content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.layout-container {
+    display: grid;
+    grid-template-rows: 55px 1fr 55px;
+    min-height: 100vh; /* Full height of the viewport */
+    width: 100%; /* Full width */
+}
+
+.header, .footer {
+    /* Styling for header and footer */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 10px;
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.header {
+    /* Styling for header */
+    gap: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.footer {
+    /* Styling for footer */
+    gap: 20px;
+    border-top: 1px solid #ccc;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Prevents overflow */
+    padding: 20px 10px;
+}
+/*
+.content svg {
+    max-height: calc(100vh - 160px);
+    width: auto;
+    height: auto;
+    min-width: calc(100vh - 160px * (8.5/11));
+    min-height: calc(100vh - 160px);
+}
+
+.content svg {
+    max-height: calc(100vh - 160px);
+    width: auto;
+    height: auto;
+    min-width: calc(100vh - 160px * (8.5/11));
+    min-height: calc(100vh - 160px);
+}
+ */
+
+.content svg {
+    /* max-height: calc(100vh - 160px); */
+    /* Update the calculation based on the SVG size */
+    width: calc(100vh - 160px * (8.5/11));
+    height: calc(100vh - 160px);
+}
+
+
+#project-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #000;
+    text-decoration: none;
+}
+
+#svg-canvas {
+    background: hsl(0, 0%, 100%);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+    /* width: 100%; */
+    height: auto;
+}
+
+.button-container {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+}
+
+button {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 0.75em 2em;
+    cursor: pointer;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    border-radius: 2px;
+}
+
+#settings::part(body) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}

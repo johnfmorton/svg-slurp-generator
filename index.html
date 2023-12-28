@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+
+    /* Turn body invisible until DOMContentLoaded */
+    body #content {
+      transition: opacity 0.25s ease-in-out;
+      opacity: 0;
+    }
+  </style>
+  <title>SVG Workspace</title>
+</head>
+
+<body>
+<div id="content">
+
+
+  <sl-drawer label="Settings" placement="end" class="drawer-overview" id="settings">
+    <sl-button slot="footer" variant="primary">Close</sl-button>
+  </sl-drawer>
+
+
+  <div class="layout-container">
+    <div class="header">
+      <!-- Content for top row -->
+      <div id="project-title">SVG Workspace</div>
+    </div>
+    <div class="content">
+      <!-- SVG is sized to be a full 8 1/2 x 11 inch document when opened in InkScape -->
+      <svg id="svg-canvas" viewBox="0 0 1056 816"></svg>
+
+    </div>
+    <div class="footer">
+      <!-- Content for bottom row -->
+      <sl-button id="regenerateBtn" variant="primary">Regenerate</sl-button>
+
+      <sl-button id="downloadBtn" variant="success">Download SVG</sl-button>
+
+      <sl-button id="settings-open" variant="neutral">Settings</sl-button>
+    </div>
+  </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+  <script>
+    // const drawer = document.querySelector('.drawer-overview');
+    const drawer = document.getElementById('settings');
+    const openButton = document.getElementById('settings-open');
+    const closeButton = drawer.querySelector('sl-button[variant="primary"]');
+    openButton.addEventListener('click', () => drawer.show());
+    closeButton.addEventListener('click', () => drawer.hide());
+    window
+      .addEventListener('DOMContentLoaded', () => {
+        if (!window.location.search) {
+          drawer.show();
+        }
+        document.getElementById('content').style.opacity = '1';
+      });
+
+  </script>
+</body>
+
+</html>

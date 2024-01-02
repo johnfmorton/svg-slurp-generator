@@ -14,13 +14,13 @@ const settings = _settingsInit()
 
 // export the svgGenerator function
 export function svgGenerator(svgObj) {
-  // clear the existing svg of any elements
-  svgObj.clear()
+    // clear the existing svg of any elements
+    svgObj.clear()
 
-  // get the width and height of the svg canvas
-  const { width, height } = svgObj.viewbox()
+    // get the width and height of the svg canvas
+    const { width, height } = svgObj.viewbox()
 
-  const debug = settings.debug ?? false
+    const debug = settings.debug ?? false
 
     // If the resetSeed toggle is checked (true), or if there is no seed value assigned
     if (settings.resetSeed || !settings.seedValue) {
@@ -61,52 +61,18 @@ export function svgGenerator(svgObj) {
         points.push({ x, y })
     }
 
-  // create Noise Grid
-  const noiseGrid = createNoiseGrid({
-      width,
-      height,
-      resolution: 22,
-    //   noiseFn: (x, y) => {
-    //       return random(0, 1)
-    // },
-    xInc: 0.01,
-    yInc: 0.01,
-      seed: random(0, 10000),
-  })
-
-  // debugger;
-  if (debug) {
-      // draw the noise grid
-      noiseGrid.cells.forEach((cell) => {
-          // get the noise value
-          const noiseValue = cell.noiseValue
-          // get the color based on the noise value in hexidecimal
-          const colorHex = _valueToColor(noiseValue * 1.5)
-
-          // debugger;
-          // draw a circle
-          // svgObj.circle(10).cx(cell.centroid.x).cy(cell.centroid.y).fill(`hsl(${color}, 100%, 50%)`)
-
-          // draw a rectangle
-          // svgObj.rect(cell.width, cell.height).x(cell.x).y(cell.y).fill(`hsl(${color}, 100%, 50%)`)
-          // draw the text value in each cell
-          svgObj
-              .text(cell.noiseValue)
-              .x(cell.x)
-              .y(cell.y)
-              .font({
-                  size: 10,
-                  family: "ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace",
-                  anchor: 'middle',
-              })
-              .rotate(cell.noiseValue * 300, cell.x, cell.y)
-              .fill(colorHex)
-          // .style('color', 'blue')
-          // .color(`hsl(${color}, 100%, 50%)`)
-      })
-  }
-
-
+    // create Noise Grid
+    const noiseGrid = createNoiseGrid({
+        width,
+        height,
+        resolution: 22,
+        //   noiseFn: (x, y) => {
+        //       return random(0, 1)
+        // },
+        xInc: 0.01,
+        yInc: 0.01,
+        seed: random(0, 10000),
+    })
 
     // draw a voronoi diagram
     const tessellation = createVoronoiTessellation({
@@ -116,32 +82,33 @@ export function svgGenerator(svgObj) {
         iterations: 6,
     })
 
-  tessellation.cells.forEach((cell) => {
-
-    // get the noise value
-    const noiseValue = noiseGrid.lookup({
-        x: cell.centroid.x,
-        y: cell.centroid.y,
-    }).noiseValue
+    tessellation.cells.forEach((cell) => {
+        // get the noise value
+        const noiseValue = noiseGrid.lookup({
+            x: cell.centroid.x,
+            y: cell.centroid.y,
+        }).noiseValue
 
         if (!debug) {
-            svgObj.polygon(cell.points).fill('none').stroke('#999999')
-          // debugger;
-          // svgObj.rect(cell.width, cell.height).attr({ x: cell.x, y: cell.y }).fill('#ff0').stroke('#999999')
-          svgObj
-              .rect(cell.innerCircleRadius, 10)
-              .attr({
-                  x: cell.centroid.x - cell.innerCircleRadius / 2,
-                  y: cell.centroid.y - 5,
-              })
-              .fill('#ff0')
-              .stroke('#999999')
-              .transform({
-                  rotate: noiseValue * 300,
-                  origin: [cell.centroid.x, cell.centroid.y],
-              })
+            // debugger;
+            // svgObj.rect(cell.width, cell.height).attr({ x: cell.x, y: cell.y }).fill('#ff0').stroke('#999999')
+            svgObj
+                .rect(cell.innerCircleRadius, 10)
+                .attr({
+                    x: cell.centroid.x - cell.innerCircleRadius / 2,
+                    y: cell.centroid.y - 5,
+                })
+                .fill('#ff0')
+                .stroke('#999999')
+                .transform({
+                    rotate: noiseValue * 300,
+                    origin: [cell.centroid.x, cell.centroid.y],
+                })
             console.log(cell)
         } else {
+            // outline the cell
+            svgObj.polygon(cell.points).fill('none').stroke('rgba(0,0,0,0.05)')
+
             // figure out the angle of the triangle based on the center of the page and the center of the cell
             const pageCenterX = width / 2
             const pageCenterY = height / 2
@@ -162,22 +129,41 @@ export function svgGenerator(svgObj) {
 
             let updatedAngle = angle + Number(angleUpdate)
 
-            // svgObj.path('M 0 0 L ' + cell.innerCircleRadius + ' 0 L ' + cell.innerCircleRadius/2 + ' ' + cell.innerCircleRadius + ' z').fill("#fff").stroke("#000").x(cell.centroid.x - (cell.innerCircleRadius/2)).y(cell.centroid.y- (cell.innerCircleRadius/2.5)).rotate(updatedAngle);
             svgObj
-                .circle(cell.innerCircleRadius)
+                .circle(cell.innerCircleRadius / 4)
                 .cx(cell.centroid.x)
                 .cy(cell.centroid.y)
-                .fill('none')
-                .stroke('#000')
-
-            // path('M 0 0 L ' + cell.innerCircleRadius + ' 0 L ' + cell.innerCircleRadius/2 + ' ' + cell.innerCircleRadius + ' z').fill("#fff").stroke("#000").x(cell.centroid.x - (cell.innerCircleRadius/2)).y(cell.centroid.y- (cell.innerCircleRadius/2.5)).rotate(updatedAngle);
+                .fill('red')
+            // .stroke('#000')
         }
     })
+
+    // debugger;
+    if (debug) {
+        // draw the noise grid
+        noiseGrid.cells.forEach((cell) => {
+            // get the noise value
+            const noiseValue = cell.noiseValue
+            // get the color based on the noise value in hexidecimal
+            const colorHex = _valueToColor(noiseValue * 1.5)
+            // debugger;
+            svgObj
+                .text(cell.noiseValue)
+                .x(cell.x)
+                .y(cell.y)
+                .font({
+                    size: 10,
+                    family: "ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace",
+                    anchor: 'middle',
+                })
+                .rotate(cell.noiseValue * 300, cell.x, cell.y)
+                .fill(colorHex)
+        })
+    }
 }
 
 function _valueToColor(value) {
-
-  // debugger;
+    // debugger;
     // Ensure the input is within the expected range
     value = Math.max(-5, Math.min(5, value))
 
@@ -186,7 +172,7 @@ function _valueToColor(value) {
     let red = Math.round((255 * (value + 5)) / 10)
 
     // Set green and blue components to a constant value
-    let green = 100
+    let green = Math.round((255 * (value + 5)) / 10)
     let blue = 100
 
     // Convert the RGB values to a hex string
@@ -196,8 +182,6 @@ function _valueToColor(value) {
 
     return color
 }
-
-
 
 // helper function to initialize the settings manager
 // use Shoelace Web Components to create the settings UI
@@ -220,7 +204,6 @@ function _settingsInit() {
             helpText: 'The number of points used to draw the tessellation.',
         },
     }
-
 
     let divider = {
         sltype: 'sl-divider',

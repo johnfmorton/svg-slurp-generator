@@ -191,10 +191,10 @@ function _settingsInit() {
             label: 'Number of points',
             min: 1,
             max: 200,
-            value: 15,
+            value: 200,
             step: 1,
             size: 'medium',
-            helpText: 'The number of points used to draw the tessellation.',
+            helpText: 'The number of points used to draw the quadtree grid.',
         },
     }
 
@@ -205,7 +205,7 @@ function _settingsInit() {
             label: 'Chance of drawing a smaller box',
             min: 0,
             max: 100,
-            value: 50,
+            value: 0,
             step: 1,
             size: 'medium',
             helpText: 'The boxes have a chance of being large or small. The larger this value, the higher the chance of a small box will be rendered.',
